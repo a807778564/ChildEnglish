@@ -23,6 +23,7 @@
 @property (nonatomic , strong) DBHelper *helper;
 @property (nonatomic , strong) StoryPlayUtil *story;
 @property (nonatomic , strong) WordCollectionCell *centerCell;
+@property (nonatomic , strong) UILabel *chinaLabel;
 @end
 
 @implementation WordDetailController
@@ -72,9 +73,6 @@
     
     self.wordArray = [self.helper getWordWithChapter:self.chapterId];
     
-    
-    
-    
     WordModel *word = self.wordArray[0];
     CGSize size = [Utils sizeWithString:word.word_english andFont:kFont(75) andMaxSize:CGSizeMake(SCREEN_WIDTH, 60)];
     self.centerCell = [[WordCollectionCell alloc] initWithFrame:CGRectMake(0, 0, size.width + 15, 90)];
@@ -86,6 +84,14 @@
         make.centerY.equalTo(self.view.mas_centerY);
         make.height.offset(90);
         make.width.offset(size.width + 15);
+    }];
+    
+    self.chinaLabel = [UILabel instanceWithFrame:CGRectZero text:word.word_chinese textColor:RGB(34, 34, 34) font:kFont(14)];
+    [self.view addSubview:self.chinaLabel];
+    [self.chinaLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.bottom.equalTo(self.centerCell.mas_top).offset(-5);
+        make.height.offset(20);
     }];
 }
 
@@ -169,6 +175,7 @@
     [self.centerCell mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.offset(size.width + 15);
     }];
+    self.chinaLabel.text = word.word_chinese;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -107,10 +107,18 @@
     
     CGSize size = [Utils sizeWithString:english andFont:font andMaxSize:CGSizeMake(SCREEN_WIDTH, 35)];
     [self.secondLine mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(size.width+15);
+        if (self.lineFull) {
+            make.width.offset(self.contentView.frame.size.width);
+        }else{
+            make.width.offset(size.width+15);
+        }
     }];
     [self.threeLine mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.offset(size.width+15);
+        if (self.lineFull) {
+            make.width.offset(self.contentView.frame.size.width);
+        }else{
+            make.width.offset(size.width+15);
+        }
     }];
     [self.threeLine.superview layoutIfNeeded];
     

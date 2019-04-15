@@ -11,4 +11,5 @@
 @interface WordCollectionCell : UICollectionViewCell
 @property (nonatomic , strong) WordModel *word;
 @property (nonatomic , assign) BOOL canDraw;
+@property (nonatomic , assign) BOOL lineFull;
 @end

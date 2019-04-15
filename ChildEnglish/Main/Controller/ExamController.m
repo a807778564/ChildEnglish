@@ -16,6 +16,7 @@
 @property (nonatomic , strong) DBHelper *helper;
 @property (nonatomic , strong) NSMutableArray *examWordArray;
 @property (nonatomic , strong) WordModel *examWord;
+@property (nonatomic , assign) float maxWidth;
 @end
 
 @implementation ExamController
@@ -34,12 +35,6 @@
     self.wordCollection.showsHorizontalScrollIndicator = NO;
     [self.wordCollection registerClass:[WordCollectionCell class] forCellWithReuseIdentifier:@"WordCollectionCell"];
     [self.view addSubview:self.wordCollection];
-    [self.wordCollection mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom);
-        make.leading.equalTo(self.view.mas_leading).offset(44);
-        make.trailing.equalTo(self.view.mas_trailing).offset(-44);
-        make.height.offset(44);
-    }];
     
     self.helper = [[DBHelper alloc] init];
     
@@ -52,8 +47,27 @@
         if (![self.examWordArray containsObject:word]) {
             [self.examWordArray addObject:word];
         }
-    } while (self.examWordArray.count < 10);
+    } while (self.examWordArray.count < 4);
     
+    [self calWidth];
+    
+    [self.wordCollection mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.view.mas_centerY);
+        make.width.offset(self.maxWidth);
+        make.trailing.equalTo(self.view.mas_trailing).offset(-44);
+        make.height.offset(44*4);
+    }];
+}
+
+- (void)calWidth{
+    self.maxWidth = 0;
+    for (int i = 0; i < self.examWordArray.count ; i++ ) {
+        WordModel *word = self.examWordArray[i];
+        CGSize size = [Utils sizeWithString:word.word_english andFont:kFont(25) andMaxSize:CGSizeMake(SCREEN_WIDTH, 35)];
+        if (size.width + 15 > self.maxWidth) {
+            self.maxWidth = size.width + 15;
+        }
+    }
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -64,11 +78,12 @@
 {
     WordModel *word = self.examWordArray[indexPath.row];
     CGSize size = [Utils sizeWithString:word.word_english andFont:kFont(25) andMaxSize:CGSizeMake(SCREEN_WIDTH, 35)];
-    return CGSizeMake(size.width + 15, size.height);
+    return CGSizeMake(self.maxWidth, size.height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     WordCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"WordCollectionCell" forIndexPath:indexPath];
+    cell.lineFull = YES;
     cell.word = self.examWordArray[indexPath.row];
     return cell;
 }

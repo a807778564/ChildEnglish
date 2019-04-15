@@ -48,8 +48,8 @@
         make.height.offset(SCREEN_HEIGHT);
     }];
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"wmsj" ofType:@"txt"];
-    NSString *content = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+//    NSString *path = [[NSBundle mainBundle] pathForResource:@"wmsj" ofType:@"txt"];
+//    NSString *content = [[NSString alloc] initWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     
     // Do any additional setup after loading the view.
 }
