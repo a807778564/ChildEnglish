@@ -110,4 +110,28 @@
     self.titleLabel.font = font;
 }
 
+- (UIButton *)initWithNomalTitle:(NSString *)nomal nomalColor:(UIColor *)nomalColor selectColor:(UIColor *)selectColor sizeFont:(UIFont *)font{
+    
+    UIButton *btn = [[UIButton alloc] init];
+    [btn setTitle:nomal forState:UIControlStateNormal];
+    [btn setTitleColor:nomalColor forState:UIControlStateNormal];
+    [btn setTitleColor:selectColor forState:UIControlStateSelected];
+    [btn.titleLabel setFont:font];
+    
+    return btn;
+}
+
+- (UIButton *)initWithNomalTitle:(NSString *)nomal nomalColor:(UIColor *)nomalColor heightColor:(UIColor *)heightColor sizeFont:(UIFont *)font{
+    
+    UIButton *btn = [[UIButton alloc] init];
+    [btn setTitle:nomal forState:UIControlStateNormal];
+    [btn setTitleColor:nomalColor forState:UIControlStateNormal];
+    if (heightColor) {
+        [btn setTitleColor:heightColor forState:UIControlStateHighlighted];
+    }
+    [btn.titleLabel setFont:font];
+    
+    return btn;
+}
+
 @end

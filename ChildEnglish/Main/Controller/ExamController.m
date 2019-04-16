@@ -10,6 +10,8 @@
 #import "DBHelper.h"
 #import "WordCollectionCell.h"
 #import "WordModel.h"
+#import "CEStartView.h"
+#import "HDAlertView.h"
 
 @interface ExamController ()<UICollectionViewDelegate,UICollectionViewDataSource>
 @property (nonatomic , strong) UICollectionView *wordCollection;
@@ -19,6 +21,8 @@
 @property (nonatomic , strong) WordModel *examWord;
 @property (nonatomic , assign) float maxWidth;
 @property (nonatomic , strong) UIImageView *checkImage;//选择正确失败照片
+@property (nonatomic , strong) CEStartView *startView;
+@property (nonatomic , assign) NSInteger errorCount;//错误次数
 @end
 
 @implementation ExamController
@@ -62,6 +66,15 @@
     self.checkImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gou"]];
     self.checkImage.hidden = YES;
     [self.view addSubview:self.checkImage];
+    
+    self.startView = [[CEStartView alloc] init];
+    [self.view addSubview:self.startView];
+    [self.startView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.view.mas_leading).offset(15);
+        make.centerY.equalTo(self.view.mas_centerY);
+    }];
+    
+//    [self.startView updateStart:4];
 }
 
 - (void)nextWord{
@@ -69,11 +82,13 @@
     index += 1;
     if (index < self.allWordArray.count) {
         self.examWord = self.allWordArray[index];
+        [self examArray:self.examWord];
+        [self.wordCollection reloadData];
+    }else{
+        NSInteger startCount = self.errorCount / self.allWordArray.count ;
+        [self.startView updateStart:5-startCount];
+        [self showAlertInfo:5-startCount];
     }
-    
-    [self examArray:self.examWord];
-    
-    [self.wordCollection reloadData];
 }
 
 - (void)examArray:(WordModel *)testWord{
@@ -157,6 +172,7 @@
         [self performSelector:@selector(hideCheckImage:) withObject:@{@"check":@"right"} afterDelay:1.0f];
     }else{
         [self.checkImage setImage:[UIImage imageNamed:@"cuo"]];
+        self.errorCount += 1;
         [self performSelector:@selector(hideCheckImage:) withObject:@{@"check":@"error"} afterDelay:1.0f];
     }
     
@@ -183,6 +199,25 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)showAlertInfo:(NSInteger)score{
+    NSString *message = [NSString stringWithFormat:@"您本次的测验成绩为%ld分，暂未达到开启故事的评级哦！您可以选择重新测试，或者付费来开启本章节的故事！",score];
+    HDAlertView *alert = [[HDAlertView alloc] initWithTitle:@"测验小提示" message:message attributeMessage:nil btnArray:@[@"购买故事",@"重新测验"] alertClick:^(NSInteger index, NSString *text) {
+        if ([text isEqualToString:@"重新测验"]) {
+            [self restartTest];
+        }
+    }];
+    [alert show];
+}
+
+- (void)restartTest{
+    self.errorCount = 0;
+    if (self.allWordArray.count > 0) {
+        self.examWord = self.allWordArray[0];
+    }
+    [self examArray:self.examWord];
+    [self.wordCollection reloadData];
 }
 
 /*

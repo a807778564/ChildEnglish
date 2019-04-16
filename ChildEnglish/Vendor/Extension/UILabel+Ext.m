@@ -183,5 +183,14 @@
     return textSize;
 }
 
+- (UILabel *)initWithTitle:(NSString *)title titleColor:(UIColor *)titleColor titleFont:(UIFont *)font{
+    UILabel *label = [[UILabel alloc] init];
+    
+    [label setText:title];
+    [label setTextColor:titleColor];
+    [label setFont:font];
+    
+    return label;
+}
 
 @end

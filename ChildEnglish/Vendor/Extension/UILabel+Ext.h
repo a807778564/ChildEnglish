@@ -35,4 +35,5 @@
 - (CGSize)sizeWithSize:(CGSize)size;
 - (CGSize)sizeWithSize:(CGSize)size withFont:(UIFont*)font;
 
+- (UILabel *)initWithTitle:(NSString *)title titleColor:(UIColor *)titleColor titleFont:(UIFont *)font;
 @end

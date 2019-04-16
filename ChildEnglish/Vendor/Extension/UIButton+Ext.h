@@ -13,5 +13,7 @@
 
 +(id) instanceWithFrame:(CGRect)frame image:(UIImage*)image;
 +(id) instanceWithFrame:(CGRect)frame title:(NSString*)title titleColor:(UIColor*)titleColor  font:(UIFont*)font;
+- (UIButton *)initWithNomalTitle:(NSString *)nomal nomalColor:(UIColor *)nomalColor selectColor:(UIColor *)selectColor sizeFont:(UIFont *)font;
 
+- (UIButton *)initWithNomalTitle:(NSString *)nomal nomalColor:(UIColor *)nomalColor heightColor:(UIColor *)heightColor sizeFont:(UIFont *)font;
 @end
