@@ -109,6 +109,7 @@
     [self.secondLine mas_updateConstraints:^(MASConstraintMaker *make) {
         if (self.lineFull) {
             make.width.offset(self.contentView.frame.size.width);
+            self.wordLabel.textColor = RGB(34, 34, 34);
         }else{
             make.width.offset(size.width+15);
         }
@@ -116,6 +117,7 @@
     [self.threeLine mas_updateConstraints:^(MASConstraintMaker *make) {
         if (self.lineFull) {
             make.width.offset(self.contentView.frame.size.width);
+            self.wordLabel.textColor = RGB(34, 34, 34);
         }else{
             make.width.offset(size.width+15);
         }

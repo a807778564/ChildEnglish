@@ -15,8 +15,10 @@
 @property (nonatomic , strong) UICollectionView *wordCollection;
 @property (nonatomic , strong) DBHelper *helper;
 @property (nonatomic , strong) NSMutableArray *examWordArray;
+@property (nonatomic , strong) NSMutableArray *allWordArray;
 @property (nonatomic , strong) WordModel *examWord;
 @property (nonatomic , assign) float maxWidth;
+@property (nonatomic , strong) UIImageView *checkImage;//选择正确失败照片
 @end
 
 @implementation ExamController
@@ -24,6 +26,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    UIButton *backBtn = [UIButton instanceWithFrame:CGRectZero title:@"返回" titleColor:[UIColor blackColor] font:kFont(14)];
+    [backBtn addTarget:self action:@selector(backBtnAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:backBtn];
+    [backBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.view.mas_leading).offset(15);
+        make.top.equalTo(self.view.mas_top).offset(15);
+        make.width.offset(44);
+        make.height.offset(44);
+    }];
+    
+    
+    self.view.backgroundColor = [UIColor whiteColor];
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
@@ -38,24 +52,58 @@
     
     self.helper = [[DBHelper alloc] init];
     
-    NSMutableArray *allWord = [self.helper getWordWithChapter:self.chapterId];
+    self.allWordArray = [self.helper getWordWithChapter:self.chapterId];
+    if (self.allWordArray.count > 0) {
+        self.examWord = self.allWordArray[0];
+    }
+
+    [self examArray:self.examWord];
     
+    self.checkImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gou"]];
+    self.checkImage.hidden = YES;
+    [self.view addSubview:self.checkImage];
+}
+
+- (void)nextWord{
+    NSInteger index = [self.allWordArray indexOfObject:self.examWord];
+    index += 1;
+    if (index < self.allWordArray.count) {
+        self.examWord = self.allWordArray[index];
+    }
+    
+    [self examArray:self.examWord];
+    
+    [self.wordCollection reloadData];
+}
+
+- (void)examArray:(WordModel *)testWord{
     self.examWordArray = [[NSMutableArray alloc] init];
+    NSMutableArray *wordArray = [[NSMutableArray alloc] initWithObjects:testWord, nil];
+   
     do {
         int x = arc4random() % 20;
-        WordModel *word = allWord[x];
-        if (![self.examWordArray containsObject:word]) {
-            [self.examWordArray addObject:word];
+        WordModel *word = self.allWordArray[x];
+        if (![wordArray containsObject:word]) {
+            [wordArray addObject:word];
         }
-    } while (self.examWordArray.count < 4);
+    } while (wordArray.count < 4);
+    
+    while (self.examWordArray.count != wordArray.count) {
+        //生成随机数
+        int x =arc4random() % wordArray.count;
+        id obj = wordArray[x];
+        if (![self.examWordArray containsObject:obj]) {
+            [self.examWordArray addObject:obj];
+        }
+    }
     
     [self calWidth];
     
-    [self.wordCollection mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.wordCollection mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.view.mas_centerY);
         make.width.offset(self.maxWidth);
         make.trailing.equalTo(self.view.mas_trailing).offset(-44);
-        make.height.offset(44*4);
+        make.height.offset(44*4+20*3);
     }];
 }
 
@@ -76,9 +124,15 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    WordModel *word = self.examWordArray[indexPath.row];
-    CGSize size = [Utils sizeWithString:word.word_english andFont:kFont(25) andMaxSize:CGSizeMake(SCREEN_WIDTH, 35)];
-    return CGSizeMake(self.maxWidth, size.height);
+//    WordModel *word = self.examWordArray[indexPath.row];
+//    CGSize size = [Utils sizeWithString:word.word_english andFont:kFont(25) andMaxSize:CGSizeMake(SCREEN_WIDTH, 35)];
+    return CGSizeMake(self.maxWidth, 44);
+}
+
+//定义每个Section的四边间距
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(1, 1, 1, 1);//分别为上、左、下、右
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -89,7 +143,40 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    WordModel *mode = self.examWordArray[indexPath.row];
+    [self checkResult:cell word:mode];
+}
 
+- (void)checkResult:(UICollectionViewCell *)collection word:(WordModel *)word{
+    
+    self.checkImage.hidden = NO;
+    
+    if ([word.word_english isEqualToString:self.examWord.word_english]) {
+        [self.checkImage setImage:[UIImage imageNamed:@"gou"]];
+        [self performSelector:@selector(hideCheckImage:) withObject:@{@"check":@"right"} afterDelay:1.0f];
+    }else{
+        [self.checkImage setImage:[UIImage imageNamed:@"cuo"]];
+        [self performSelector:@selector(hideCheckImage:) withObject:@{@"check":@"error"} afterDelay:1.0f];
+    }
+    
+    [self.checkImage mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.trailing.equalTo(collection.mas_trailing);
+        make.centerY.equalTo(collection.mas_centerY);
+        make.height.offset(20);
+        make.width.offset(20);
+    }];
+}
+
+- (void)hideCheckImage:(id)obj{
+    self.checkImage.hidden = YES;
+    if ([obj[@"check"] isEqualToString:@"right"]) {
+        [self nextWord];
+    }
+}
+
+- (void)backBtnAction{
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 
