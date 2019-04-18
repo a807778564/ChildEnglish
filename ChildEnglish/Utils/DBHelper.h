@@ -13,6 +13,9 @@
 //获取章节列表
 - (NSMutableArray *)getChapterArray;
 
+//更新章节
+- (void)updateChapterLock:(NSInteger)chapterId;
+
 /**
  获取单词列表
  @param chapterId 章节id

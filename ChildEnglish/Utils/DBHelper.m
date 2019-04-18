@@ -80,6 +80,14 @@
     return arr;
 }
 
+- (void)updateChapterLock:(NSInteger)chapterId{
+    FMDatabase *db = [self getBase];
+    if ([db open]) {
+        [db executeUpdateWithFormat:@"update t_chapter set chapter_lock = 1 where chapter_id=%ld",chapterId];
+    }
+    [db close];
+}
+
 - (NSMutableArray *)getWordWithChapter:(NSInteger)chapterId{
     NSMutableArray *arr = [[NSMutableArray alloc] init];
     FMDatabase *db = [self getBase];
@@ -118,7 +126,7 @@
     FMDatabase *db = [self getBase];
     FMResultSet *result= [[FMResultSet alloc] init];
     if ([db open]) {
-        NSString *sql = [NSString stringWithFormat:@"select count(*) from t_word where word_is_study = 1 and chapter_id = %ld",chapterId];
+        NSString *sql = [NSString stringWithFormat:@"select count(*) from t_word where word_is_study = 0 and chapter_id = %ld",chapterId];
         result = [db executeQuery:sql];
         if ([result next]) {
             count = [result intForColumnIndex:0];

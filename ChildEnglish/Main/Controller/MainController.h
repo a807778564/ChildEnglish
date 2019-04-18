@@ -5,9 +5,8 @@
 //  Created by huangrensheng on 2018/5/4.
 //  Copyright © 2018年 huangrensheng. All rights reserved.
 //
+#import "CEBaseController.h"
 
-#import <UIKit/UIKit.h>
-
-@interface MainController : UIViewController
+@interface MainController : CEBaseController
 
 @end

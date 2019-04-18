@@ -12,6 +12,7 @@
 @property (nonatomic , strong) UILabel *chapterName;
 @property (nonatomic , strong) UIImageView *backImage;
 @property (nonatomic , strong) UIImageView *lock;
+@property (nonatomic , strong) UIView *lockView;
 @end
 
 @implementation ChapterCollectionCell
@@ -27,6 +28,13 @@
             make.edges.equalTo(self.contentView);
         }];
         
+        self.lockView = [[UIView alloc] init];
+        self.lockView.backgroundColor = RGBA(0, 0, 0, 0.5);
+        [self.contentView addSubview:self.lockView];
+        [self.lockView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.contentView);
+        }];
+        
         self.chapterName = [UILabel instanceWithFrame:CGRectZero text:@"章节名" textColor:[UIColor blackColor] font:kFont(13)];
         self.chapterName.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:self.chapterName];
@@ -35,13 +43,17 @@
             make.height.offset(21);
         }];
         
-        
     }
     return self;
 }
 
 - (void)setChapter:(ChapterModel *)chapter{
     self.chapterName.text = chapter.chapter_name;
+    if (!chapter.chapter_lock) {
+        self.lockView.hidden = NO;
+    }else{
+        self.lockView.hidden = YES;
+    }
 }
 
 @end

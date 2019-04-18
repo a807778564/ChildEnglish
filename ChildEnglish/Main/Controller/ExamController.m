@@ -85,9 +85,9 @@
         [self examArray:self.examWord];
         [self.wordCollection reloadData];
     }else{
-        NSInteger startCount = self.errorCount / self.allWordArray.count ;
+        NSInteger startCount = self.allWordArray.count/self.errorCount;
         [self.startView updateStart:5-startCount];
-        [self showAlertInfo:5-startCount];
+        [self showAlertInfo:self.errorCount];
     }
 }
 
@@ -202,8 +202,8 @@
 }
 
 - (void)showAlertInfo:(NSInteger)score{
-    NSString *message = [NSString stringWithFormat:@"您本次的测验成绩为%ld分，暂未达到开启故事的评级哦！您可以选择重新测试，或者付费来开启本章节的故事！",score];
-    HDAlertView *alert = [[HDAlertView alloc] initWithTitle:@"测验小提示" message:message attributeMessage:nil btnArray:@[@"购买故事",@"重新测验"] alertClick:^(NSInteger index, NSString *text) {
+    NSString *message = [NSString stringWithFormat:@"您本次的测验答错%ld次，没有达到解锁故事的标准哦！您可以选择重新测试，或者立即解锁故事！",score];
+    HDAlertView *alert = [[HDAlertView alloc] initWithTitle:@"测验小提示" message:message attributeMessage:nil btnArray:@[@"解锁故事",@"重新测验"] alertClick:^(NSInteger index, NSString *text) {
         if ([text isEqualToString:@"重新测验"]) {
             [self restartTest];
         }

@@ -7,6 +7,7 @@
 //
 
 #import "Utils.h"
+#import "MBProgressHUD.h"
 
 @implementation Utils
 
@@ -69,5 +70,15 @@
     CGPathRelease(path);
     //  把绘制好的虚线添加上来
     [lineView.layer addSublayer:shapeLayer];
+}
+
++ (void)showTextOnly:(NSString *)msg{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[UIApplication sharedApplication] delegate] window] animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.detailsLabel.text = msg;
+    hud.detailsLabel.font = [UIFont systemFontOfSize:12];
+    hud.margin = 10.f;
+    hud.removeFromSuperViewOnHide = YES;
+    [hud hideAnimated:YES afterDelay:1.5];
 }
 @end

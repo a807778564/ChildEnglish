@@ -33,7 +33,7 @@
         //设置声音的大小
         self.player.volume = 1;//范围为（0到1）；
         //设置循环次数，如果为负数，就是无限循环
-        self.player.numberOfLoops =-1;
+        self.player.numberOfLoops = -1;
         //设置播放进度
         self.player.currentTime = 0;
         //准备播放

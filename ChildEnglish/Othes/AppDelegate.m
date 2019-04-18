@@ -22,6 +22,7 @@
     // Override point for customization after application launch.
     DBHelper *db =  [[DBHelper alloc] init];
     [db initData];
+    [db updateChapterLock:1];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.rootViewController = [[MainController alloc] init];

@@ -24,7 +24,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self setBackImageName:@"main_back"];
+    
     self.view.backgroundColor = [UIColor whiteColor];
+    
     UICollectionViewFlowLayout *layout = [[CardCollectionStyleLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     layout.minimumInteritemSpacing = (SCREEN_HEIGHT-cellHeight)/2;
@@ -38,14 +42,14 @@
     self.chaperView.dataSource = self;
     self.chaperView.showsHorizontalScrollIndicator = NO;
     self.chaperView.showsVerticalScrollIndicator = NO;
-    self.chaperView.backgroundColor = [UIColor whiteColor];
+    self.chaperView.backgroundColor = [UIColor clearColor];
     [self.chaperView registerClass:[ChapterCollectionCell class] forCellWithReuseIdentifier:@"ChapterCollectionCell"];
     [self.view addSubview:self.chaperView];
     [self.chaperView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.view.mas_centerY);
         make.centerX.equalTo(self.view.mas_centerX);
-        make.width.offset(SCREEN_HEIGHT);
-        make.height.offset(SCREEN_HEIGHT);
+        make.width.offset(100*4);
+        make.height.offset(200);
     }];
     
 //    NSString *path = [[NSBundle mainBundle] pathForResource:@"wmsj" ofType:@"txt"];
@@ -78,9 +82,13 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ChapterModel *chapter = self.chaterArray[indexPath.section];
-    WordDetailController *wordDetail = [[WordDetailController alloc] init];
-    wordDetail.chapterId = chapter.chapter_id;
-    [self presentViewController:wordDetail animated:NO completion:nil];
+    if (!chapter.chapter_lock) {
+        [Utils showTextOnly:@"本章节暂未解锁！"];
+    }else{
+        WordDetailController *wordDetail = [[WordDetailController alloc] init];
+        wordDetail.chapterId = chapter.chapter_id;
+        [self presentViewController:wordDetail animated:NO completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

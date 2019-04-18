@@ -52,6 +52,9 @@
 		2CF566EB2265C65600F34B5C /* CEStartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF566EA2265C65600F34B5C /* CEStartView.m */; };
 		2CF566EE2265CE1200F34B5C /* HDAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF566ED2265CE1200F34B5C /* HDAlertView.m */; };
 		2CF566F12265CFF400F34B5C /* UIView+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF566F02265CFF400F34B5C /* UIView+Ext.m */; };
+		2CF566F52266C26F00F34B5C /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF566F32266C26F00F34B5C /* MBProgressHUD.m */; };
+		2CF566F7226700F700F34B5C /* main_back.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CF566F6226700F700F34B5C /* main_back.png */; };
+		2CF566FA2267012800F34B5C /* CEBaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CF566F92267012800F34B5C /* CEBaseController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -144,6 +147,11 @@
 		2CF566ED2265CE1200F34B5C /* HDAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HDAlertView.m; sourceTree = "<group>"; };
 		2CF566EF2265CFF400F34B5C /* UIView+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Ext.h"; sourceTree = "<group>"; };
 		2CF566F02265CFF400F34B5C /* UIView+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Ext.m"; sourceTree = "<group>"; };
+		2CF566F32266C26F00F34B5C /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		2CF566F42266C26F00F34B5C /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		2CF566F6226700F700F34B5C /* main_back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = main_back.png; sourceTree = "<group>"; };
+		2CF566F82267012800F34B5C /* CEBaseController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CEBaseController.h; sourceTree = "<group>"; };
+		2CF566F92267012800F34B5C /* CEBaseController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CEBaseController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +226,7 @@
 		2C131423209C062400F0955E /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				2CF566F22266C26F00F34B5C /* MBProgressHUD */,
 				2C5A163E20A6CD7E00FEB101 /* Extension */,
 				2C131424209C062400F0955E /* Masonry */,
 				2C13143E209C062400F0955E /* fmdb */,
@@ -284,6 +293,8 @@
 				2C15F24320AC4C100059500F /* WordDetailController.m */,
 				2C21684720C5128E00252196 /* ExamController.h */,
 				2C21684820C5128E00252196 /* ExamController.m */,
+				2CF566F82267012800F34B5C /* CEBaseController.h */,
+				2CF566F92267012800F34B5C /* CEBaseController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -357,12 +368,22 @@
 		2CF566DB22659F3D00F34B5C /* images */ = {
 			isa = PBXGroup;
 			children = (
+				2CF566F6226700F700F34B5C /* main_back.png */,
 				2CF566E72265C5A500F34B5C /* start_gray.png */,
 				2CF566E52265C52600F34B5C /* start.png */,
 				2CF566DC22659F5600F34B5C /* cuo.png */,
 				2CF566DD22659F5700F34B5C /* gou.png */,
 			);
 			path = images;
+			sourceTree = "<group>";
+		};
+		2CF566F22266C26F00F34B5C /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				2CF566F32266C26F00F34B5C /* MBProgressHUD.m */,
+				2CF566F42266C26F00F34B5C /* MBProgressHUD.h */,
+			);
+			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -426,6 +447,7 @@
 				2CF566E82265C5A500F34B5C /* start_gray.png in Resources */,
 				2C131412209C05A400F0955E /* LaunchScreen.storyboard in Resources */,
 				2C11356720B947BC008A35FF /* Story in Resources */,
+				2CF566F7226700F700F34B5C /* main_back.png in Resources */,
 				2CF566DF22659F5700F34B5C /* gou.png in Resources */,
 				2C13140F209C05A400F0955E /* Assets.xcassets in Resources */,
 				2C13140D209C05A300F0955E /* Main.storyboard in Resources */,
@@ -440,6 +462,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CF566FA2267012800F34B5C /* CEBaseController.m in Sources */,
 				2C15F24420AC4C100059500F /* WordDetailController.m in Sources */,
 				2C131456209C062400F0955E /* MASViewConstraint.m in Sources */,
 				2C13145A209C062400F0955E /* FMDatabase.m in Sources */,
@@ -462,6 +485,7 @@
 				2C13144E209C062400F0955E /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				2C131450209C062400F0955E /* MASCompositeConstraint.m in Sources */,
 				2C13145C209C062400F0955E /* FMResultSet.m in Sources */,
+				2CF566F52266C26F00F34B5C /* MBProgressHUD.m in Sources */,
 				2C13144C209C062400F0955E /* AppDelegate.m in Sources */,
 				2C21684F20C5276000252196 /* PainterView.m in Sources */,
 				2C5A163D20A6BB4E00FEB101 /* ChapterCollectionCell.m in Sources */,

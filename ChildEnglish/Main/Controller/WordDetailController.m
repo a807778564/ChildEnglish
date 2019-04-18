@@ -65,8 +65,8 @@
     [playBtn addTarget:self action:@selector(playStory) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:playBtn];
     [playBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view.mas_centerX);
-        make.top.equalTo(self.view.mas_top);
+        make.trailing.equalTo(self.view.mas_trailing);
+        make.top.equalTo(self.view.mas_top).offset(15);
         make.width.offset(44);
         make.height.offset(44);
     }];
@@ -162,6 +162,11 @@
 }
 
 - (void)playStory{
+    NSInteger count = [self.helper selectUnStudyCountWithChapterId:self.chapterId];
+    if (count > 0) {
+        [Utils showTextOnly:@"还有单词没学习完呢！别着急！"];
+        return;
+    }
     ExamController *wordExam = [[ExamController alloc] init];
     wordExam.chapterId = self.chapterId;
     [self presentViewController:wordExam animated:NO completion:nil];
